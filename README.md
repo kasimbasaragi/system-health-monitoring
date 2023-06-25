@@ -1,4 +1,4 @@
-# **Cloud Native Resource Monitoring Python App on K8s!**
+# **System Health Monitoring Python App on K8s!**
 
 ## Things you will Learn 🤯
 
