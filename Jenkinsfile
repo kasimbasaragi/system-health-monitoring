@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_USER = 'kasimbasaragi'                        // 🔁 Change this
-        IMAGE_NAME = 'system-health-monitoring'                  // 👈 Your Docker image name
-        APP_NAME = 'system-health-monitoring'                    // 👈 App name for Kubernetes
-        IMAGE_TAG = "${env.BUILD_NUMBER}"                        // 🏷️ Use Jenkins build number
+        DOCKER_HUB_USER = 'kasimbasaragi'
+        IMAGE_NAME = 'system-health-monitoring'
+        APP_NAME = 'system-health-monitoring'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
         DOCKER_IMAGE = "${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
     }
 
@@ -18,9 +18,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('app') {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                }
+                sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
@@ -37,13 +35,11 @@ pipeline {
 
         stage('Deploy to Minikube') {
             steps {
-                script {
-                    sh """
-                        export APP_NAME=${APP_NAME}
-                        export DOCKER_IMAGE=${DOCKER_IMAGE}
-                        envsubst < k8s/deployment.yaml | kubectl apply -f -
-                    """
-                }
+                sh """
+                    export APP_NAME=${APP_NAME}
+                    export DOCKER_IMAGE=${DOCKER_IMAGE}
+                    envsubst < k8s/deployment.yaml | kubectl apply -f -
+                """
             }
         }
     }
