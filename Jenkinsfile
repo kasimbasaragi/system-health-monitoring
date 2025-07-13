@@ -34,18 +34,18 @@ pipeline {
         }
 
         stage('Deploy to Minikube') {
-    steps {
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-            sh """
-                export APP_NAME=${APP_NAME}
-                export DOCKER_IMAGE=${DOCKER_IMAGE}
-                export KUBECONFIG=${KUBECONFIG}
-                envsubst < k8s/deployment.yaml | kubectl apply -f -
-            """
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export APP_NAME=${APP_NAME}
+                        export DOCKER_IMAGE=${DOCKER_IMAGE}
+                        export KUBECONFIG=${KUBECONFIG}
+                        envsubst < k8s/deployment.yaml | kubectl apply -f -
+                    """
+                }
+            }
         }
     }
-}
-
 
     post {
         success {
